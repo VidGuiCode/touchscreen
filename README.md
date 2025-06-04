@@ -93,6 +93,11 @@ L3 enables plant operators to:
 
 ---
 
+## 🧱 Database
+The `/database/webdb-db_2025-02-21 - shortform.sql` file contains the full table structure and foreign key relationships used in this project. You can import it into MySQL using:
+
+---
+
 ## 🛠️ Setup
 
 1. Clone the repo to your **Raspberry Pi (Apache server)** under `/var/www/html`
