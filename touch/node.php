@@ -11,6 +11,11 @@ include 'inc/header.inc.php';
     <div id="chart"></div>
     <form action="add_pump_task.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <button type="submit"><i class="fas fa-tint"></i> Water 100ml</button>
+    </form>
+    <form action="add_light_task.php" method="POST">
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <button type="submit"><i class="fas fa-lightbulb"></i> Toggle Light</button>
         <button type="submit">Water 100ml</button>
     </form>
     <form action="add_light_task.php" method="POST">
