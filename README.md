@@ -21,7 +21,7 @@ The dashboard enables plant operators to:
 |-----------|------------|---------|
 | **Frontend** | HTML5, CSS3, JavaScript, jQuery 3.7.1 | Touch interface & real-time updates |
 | **Backend** | PHP 8+, MySQL | API endpoints & data management |
-| **Charts** | Chart.js | Real-time sensor data visualization |
+| **Charts** | Apexcharts.js | Real-time sensor data visualization |
 | **Touch UI** | Custom drag-scroll, snap sections | Raspberry Pi touchscreen optimization |
 | **Hardware** | Raspberry Pi 4 + 7" capacitive touchscreen | Kiosk mode deployment |
 
