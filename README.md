@@ -25,12 +25,18 @@ L3 enables plant operators to:
 
 ## 🧩 Structure
 
-- `/index.php` – Main dashboard page, shows all statistics and all node cards
-- `/node.php?id=1` – Per-node detail view, includes chart, thresholds, tasks
-- `/fetch_statistics.php` – AJAX endpoint for general data
-- `/fetch_nodes.php` – AJAX endpoint for node list and status
-- `/fetch_node_data.php?id=X` – AJAX for chart & task data per node
-- `/writeLog.php` – Used by ESP32 nodes to log measurements
+- `/index.php` – Main dashboard page (general statistics + node cards)
+- `/node.php?id=X` – Detail page for a specific node (chart, tasks, thresholds)
+- `/resources/fetch/fetch_statistics.php` – AJAX endpoint for general data
+- `/resources/fetch/fetch_nodes.php` – AJAX endpoint for node list and status
+- `/resources/fetch/fetch_node_data.php?id=X` – AJAX for chart & task data per node
+- `/resources/css/style.css` – Main styling (colors, layout, component styles)
+- `/resources/js/script.js` – Handles loading screen, polling, dynamic updates, Chart.js rendering
+- `/resources/img/Logo/800/logo_tp.png` – Project logo used in header
+- `/inc/db.inc.php` – Database connection script
+- `/inc/header.inc.php` – Shared HTML header (used on all pages)
+- `/inc/footer.inc.php` – Shared HTML footer (optional)
+- `/database/plantimeter.sql` – MySQL export of full schema (Node, Measurement, Task, etc.)
 
 ---
 
@@ -89,7 +95,6 @@ L3 enables plant operators to:
 | `fetch_statistics.php` | Returns JSON for stats |
 | `fetch_nodes.php` | Returns JSON for all nodes |
 | `fetch_node_data.php` | Returns measurements + tasks for one node |
-| `writeLog.php` | Accepts log input from devices (via POST) |
 
 ---
 
@@ -111,7 +116,7 @@ The `/database/webdb-db_2025-02-21 - shortform.sql` file contains the full table
 ## 🔒 Security Notes
 
 - Only data logging via MAC address is open.
-- Admin settings and authentication are handled separately in L4/L6.
+- Admin settings and authentication are handled separately in a other Website(L4/L6).
 
 ---
 
