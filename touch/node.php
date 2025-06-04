@@ -16,6 +16,11 @@ include 'inc/header.inc.php';
     <form action="add_light_task.php" method="POST">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <button type="submit"><i class="fas fa-lightbulb"></i> Toggle Light</button>
+        <button type="submit">Water 100ml</button>
+    </form>
+    <form action="add_light_task.php" method="POST">
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <button type="submit">Toggle Light</button>
     </form>
 </section>
 <?php include 'inc/footer.inc.php'; ?>

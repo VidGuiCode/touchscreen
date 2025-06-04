@@ -47,6 +47,7 @@ function updateNodes(){
             card.className='card';
             const icon = n.online ? '<i class="fas fa-circle"></i>' : '<i class="far fa-circle"></i>';
             card.innerHTML = `<strong>${n.name||'Unnamed'}</strong><br>${icon} <span class="${n.online?'status-online':'status-offline'}">${n.online?'Online':'Offline'}</span>`;
+            card.innerHTML = `<strong>${n.name||'Unnamed'}</strong><br><span class="${n.online?'status-online':'status-offline'}">${n.online?'Online':'Offline'}</span>`;
             card.addEventListener('click', ()=>{ location.href='node.php?id='+n.pk; });
             container.appendChild(card);
         });

@@ -1,4 +1,12 @@
 /* Plantimeter Touchscreen Dashboard Styles */
+=======
+@font-face {
+    font-family: 'WhiteRabbit';
+    src: url('../fonts/whitrabt.woff') format('woff'),
+         url('../fonts/whitrabt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 :root {
     --color-1: #122A44;
     --color-2: #2BB9D9;
@@ -16,6 +24,7 @@
 }
 body {
     font-family: sans-serif;
+    font-family: 'WhiteRabbit', sans-serif;
     margin: 0;
     padding: 0;
     background: var(--color-1);
@@ -35,6 +44,11 @@ header {
     color: var(--color-3);
     font-size: var(--font-large);
     z-index: 1000;
+}
+    z-index: 1000;
+}
+header img {
+    height: 60px;
 }
 .scroll-wrapper {
     position: absolute;
@@ -76,6 +90,7 @@ button:disabled {
     top: 0; left: 0; right: 0; bottom: 0;
     background: var(--color-1);
     display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;

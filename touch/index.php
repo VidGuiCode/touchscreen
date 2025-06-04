@@ -5,6 +5,10 @@
 </section>
 <section class="section" id="nodes">
     <h2><i class="fas fa-seedling"></i> Nodes</h2>
+    <h2>Statistics</h2>
+    <div>Total Nodes: <span id="stat-nodes">0</span></div>
+</section>
+<section class="section" id="nodes">
     <!-- Node cards inserted here -->
 </section>
 <?php include 'inc/footer.inc.php'; ?>
