@@ -1,307 +1,286 @@
-# 📟 Plantimeter Touchscreen Dashboard
+# 📟 Plantimeter Touchscreen Dashboard (L3 Module)
 
-**Real-time plant monitoring system with touch-optimized interface for Raspberry Pi**
+A **touch-optimized web dashboard** for the Plantimeter automated plant monitoring system, designed to run on a **Raspberry Pi 4 with 7" capacitive touchscreen (800x480)**. Features real-time sensor monitoring, plant care automation, and intuitive finger-touch navigation.
 
-This module provides the **web-based dashboard** for interacting with sensor nodes in the **Plantimeter automated plant monitoring system**. It runs on a **Raspberry Pi 4** equipped with a **7" 800x480 capacitive touchscreen** and is fully optimized for **touch interaction**, **real-time data**, and intuitive navigation.
+## 🎯 Core Features
 
-## 🌐 Purpose
+### Touch-First Interface
+- **Fixed 800x480 layout** optimized for capacitive touch
+- **Snap-scroll sections** with smooth transitions between views
+- **Custom drag scrolling** using mouse events (no mobile gestures)
+- **Section feedback** - visual indicators when switching between sections
+- **Finger-friendly buttons** with proper touch targets and cooldown management
 
-The dashboard enables plant operators to:
-- **Monitor all connected ESP32 sensor nodes** in real-time
-- **View detailed charts** and historical data per node
-- **Control plant care** - trigger watering (100ml) and grow lights
-- **Track system health** with color-coded alerts and statistics
-- **Navigate seamlessly** through a touch-optimized scroll-snap interface
-
----
-
-## ⚙️ Tech Stack
-
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Frontend** | HTML5, CSS3, JavaScript, jQuery 3.7.1 | Touch interface & real-time updates |
-| **Backend** | PHP 8+, MySQL | API endpoints & data management |
-| **Charts** | Apexcharts.js | Real-time sensor data visualization |
-| **Touch UI** | Custom drag-scroll, snap sections | Raspberry Pi touchscreen optimization |
-| **Hardware** | Raspberry Pi 4 + 7" capacitive touchscreen | Kiosk mode deployment |
-
----
-
-## 🎯 Key Features
-
-### Real-time Monitoring
+### Real-Time Monitoring
 - **5-second AJAX polling** for live dashboard updates
-- **Color-coded status indicators** (online/offline, normal/warning/critical)
+- **30-second refresh** on individual node detail pages
+- **Progressive loading screens** with animated progress bars
+- **Color-coded status indicators** (online/offline, health warnings)
+
+### Plant Care Automation
+- **One-click watering** (100ml) with task queue system
+- **Grow light toggle** with visual feedback
+- **Task management** with completion tracking
 - **Threshold-based alerts** for soil moisture and temperature
-- **Auto-refresh charts** showing last 10 measurements per node
 
-### Touch-Optimized Interface
-- **Snap-scroll sections** - smooth vertical navigation between dashboard areas
-- **Drag-to-scroll functionality** - custom mouse/touch event handling
-- **Finger-friendly buttons** - 140px+ width for easy touch interaction
-- **Loading animations** with progress bars for visual feedback
-- **No hover dependencies** - all interactions work via touch/click
+## 🏗️ Architecture
 
-### Plant Care Controls
-- **One-tap watering** - adds 100ml water task with 60-second cooldown
-- **Light toggle switch** - custom CSS switch for grow light control
-- **Task queue system** - queued commands sent to ESP32 nodes
-- **Action feedback** - visual confirmation and error handling
+```
+Hardware: Raspberry Pi 4 + 7" Touchscreen (800x480)
+Frontend: HTML5 + CSS3 + JavaScript/jQuery + ApexCharts
+Backend: PHP 8+ + MySQL
+Interface: AJAX-driven real-time updates
+```
 
-### Navigation Structure
-- **Section 1**: General statistics (active nodes, system errors, alerts)
-- **Section 2**: Node grid with live sensor readings
-- **Section 3**: Individual node details (charts, tasks, thresholds)
+### Data Flow
+```
+ESP32 Sensor Nodes → MySQL Database → PHP APIs → AJAX Endpoints → Touch UI
+                                         ↓
+User Touch Actions → AJAX Requests → Task Queue → Node Execution
+```
 
----
-
-## 🧩 Project Structure
+## 📁 Project Structure
 
 ```
 touch/
-├── index.php                    # Main dashboard (statistics + node grid)
-├── node.php                     # Individual node detail page
-├── add_pump_task.php           # AJAX endpoint for watering commands
-├── add_light_task.php          # AJAX endpoint for light control
-├── fetch_nodes.php             # AJAX endpoint for node list & status
-├── fetch_node_data.php         # AJAX endpoint for charts & tasks
-├── fetch_statistics.php        # AJAX endpoint for system statistics
-├── writeLog.php                # Log endpoint for ESP32 nodes
-├── api-test.html               # Development testing interface
+├── index.php                     # Main dashboard with statistics & node grid
+├── node.php                      # Individual node detail page with charts
 ├── inc/
-│   ├── db.inc.php              # Database connection & config
-│   ├── header.inc.php          # Shared HTML header
-│   ├── footer.inc.php          # Shared HTML footer
-│   └── touch.inc.php           # Touch interaction scripts
+│   ├── db.inc.php                # Database connection
+│   ├── header.inc.php            # Shared HTML header
+│   ├── footer.inc.php            # Shared HTML footer
+│   ├── session.inc.php           # Session management (empty)
+│   └── touch.inc.php             # Touch interaction scripts
 ├── resources/
-│   ├── css/main.css            # Complete styling (800+ lines)
+│   ├── css/
+│   │   └── main.css              # Complete styling with CSS variables
 │   ├── js/
-│   │   ├── jquery-3.7.1.min.js
-│   │   └── script.js           # Custom touch & AJAX handlers
-│   ├── img/Logo/               # Project logos (250px, 800px, 1024px)
-│   └── fonts/whitrabt.*        # Custom pixel font
-└── logs/logs.txt               # System operation logs
+│   │   ├── jquery-3.7.1.min.js  # jQuery library
+│   │   └── script.js             # Touch interactions & drag scrolling
+│   ├── fonts/
+│   │   ├── whitrabt.ttf          # Custom WhiteRabbit font
+│   │   ├── whitrabt.woff         # Font in WOFF format
+│   │   └── fontawesome-free-6.7.1/ # FontAwesome icons
+│   └── img/
+│       ├── favicon.png           # Site favicon
+│       └── Logo/                 # Logo variations (250px, 800px, 1024px)
+├── resources/fetch/              # AJAX API endpoints
+│   ├── fetch_statistics.php     # General dashboard statistics
+│   ├── fetch_nodes.php          # Node list with status & measurements
+│   └── fetch_node_data.php      # Individual node data & tasks
+├── add_light_task.php           # Light control task creation
+├── add_pump_task.php            # Watering task creation
+└── logs/
+    └── logs.txt                 # System logs
 ```
-
----
 
 ## 🎨 Design System
 
 ### Screen Specifications
-- **Fixed Resolution**: 800x480px (Raspberry Pi 7" touchscreen)
-- **Header Height**: 70px fixed position
-- **Scroll Behavior**: CSS `scroll-snap-type: y mandatory`
-- **Section Heights**: `min-height: calc(100vh - 80px)`
-- **Touch Targets**: Minimum 44px, preferred 60px+ for buttons
+- **Resolution:** Fixed 800x480px (Raspberry Pi 7" touchscreen)
+- **Header:** 70px height, fixed position with logo and navigation
+- **Scroll Wrapper:** Full viewport with snap-scroll sections
+- **Loading Screen:** Full-screen overlay with progress animation
 
-### Color Palette
+### Color Palette (CSS Variables)
 ```css
 :root {
-  --color-1: #122A44;    /* Header, dark backgrounds */
-  --color-2: #2BB9D9;    /* Primary accent, cyan highlights */
-  --color-3: #A7F8FB;    /* Light cyan, stat values */
-  --color-4: #129B7F;    /* Teal buttons, progress bars */
-  --color-5: #36D282;    /* Success green, healthy status */
-  --color-6: #87ED95;    /* Light green indicators */
-  
-  /* Status Colors */
-  --bs-success: #43a047; /* Online status */
-  --bs-warning: #ffca28; /* Warning thresholds */
-  --bs-danger: #e53935;  /* Offline/critical status */
+    /* Primary Colors */
+    --color-1: #122A44;    /* Header, dark backgrounds */
+    --color-2: #2BB9D9;    /* Cyan highlights, titles */
+    --color-3: #A7F8FB;    /* Light accent, labels */
+    --color-4: #129B7F;    /* Buttons, success states */
+    --color-5: #36D282;    /* Success indicators */
+    --color-6: #87ED95;    /* Healthy status */
+    
+    /* Alerts */
+    --bs-success: #43a047;
+    --bs-warning: #ffca28;
+    --bs-danger: #e53935;
+    
+    /* Shadows */
+    --box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 ```
 
 ### Typography
-- **Primary Font**: WhiteRabbit (custom pixel font)
-- **Font Sizes**: 14px (small), 16px (medium), 22px (large)
-- **Headers**: 26-30px for section titles
+- **Primary Font:** WhiteRabbit (custom pixel-style font)
+- **Fallback:** sans-serif
+- **Sizes:** 14px (small), 16px (medium), 22px (large)
 
----
+## 🔧 Touch Interface Implementation
 
-## 🔄 Real-time Data Flow
-
-```
-ESP32 Nodes → writeLog.php → MySQL Database
-                                  ↓
-Dashboard ← AJAX Endpoints ← fetch_*.php APIs
-    ↓
-User Actions → add_*_task.php → Task Queue → ESP32 Execution
-```
-
-### AJAX Update Intervals
-- **Dashboard**: 5 seconds (statistics + node status)
-- **Node Details**: 30 seconds (charts + measurements)
-- **Task Cooldown**: 60 seconds (prevent spam)
-
----
-
-## 🎮 Touch Interaction Implementation
-
-### Scroll-Snap Navigation
+### Snap-Scroll Sections
 ```css
 .scroll-wrapper {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
 }
 
 .scroll-wrapper > section {
-  scroll-snap-align: start;
-  min-height: calc(100vh - 80px);
+    scroll-snap-align: start;
+    min-height: calc(100vh - 80px);
 }
 ```
 
 ### Custom Drag Scrolling
-- **Mouse down**: Capture start position and scroll offset
-- **Mouse move**: Calculate delta and update scroll position
-- **Mouse up**: Reset drag state
-- **Cursor feedback**: `grab` → `grabbing` states
+- Mouse-based drag simulation for touch devices
+- Visual feedback with cursor changes (grab/grabbing)
+- Smooth momentum scrolling
+- Section snapping on release
 
-### Button States & Feedback
-- **Water button**: Disabled during cooldown, text changes ("Sende..." → "Hinzugefügt!")
-- **Light switch**: Custom CSS toggle with brightness-based state
-- **Card hover**: Transform scale and shadow effects
+### Touch Targets
+- Minimum 44px touch targets for accessibility
+- Proper button spacing and padding
+- Visual feedback on touch/hover states
+- Cooldown timers to prevent rapid-fire actions
 
----
+## 📊 Data Visualization
 
-## 📊 Database Schema
+### ApexCharts Integration
+- **Line charts** for sensor measurements over time
+- **Responsive design** for 800x480 resolution
+- **Real-time updates** with smooth animations
+- **Color-coded series:**
+  - Soil Moisture: `#36D282` (green)
+  - Air Humidity: `#2BB9D9` (cyan) 
+  - Air Temperature: `#FF5733` (red)
+
+### Chart Configuration
+```javascript
+// Use ApexCharts for all data visualization
+const options = {
+    chart: { type: 'line', height: 300 },
+    series: [/* sensor data */],
+    colors: ['#36D282', '#2BB9D9', '#FF5733'],
+    responsive: [{ 
+        breakpoint: 800, 
+        options: { /* mobile adjustments */ }
+    }]
+};
+```
+
+## 🔄 Real-Time Updates
+
+### AJAX Polling System
+- **Dashboard:** 5-second intervals for statistics and node status
+- **Node Details:** 30-second intervals for charts and measurements
+- **Progressive Loading:** Visual feedback during data fetches
+- **Error Handling:** Graceful degradation on connection issues
+
+### Update Mechanisms
+```javascript
+// Statistics update every 5 seconds
+setInterval(updateStatistics, 5000);
+
+// Node data update every 5 seconds on main dashboard
+setInterval(updateNodes, 5000);
+
+// Node detail page updates every 30 seconds
+setInterval(fetchNodeData, 30000);
+```
+
+## 🛠️ Task Management System
+
+### Watering System
+- **100ml standard dose** via pump tasks
+- **Immediate execution** with database queue
+- **Visual confirmation** and cooldown timer
+- **Status tracking** (pending/completed/failed)
+
+### Light Control
+- **Toggle switch interface** with visual feedback
+- **Binary control** (0% = off, 100% = on)
+- **Task completion flagging** system
+- **Real-time status updates**
+
+## 🔐 Database Schema
 
 ### Core Tables
-- **Node**: Sensor hardware (MAC address, plant variety, operator)
-- **Measurement**: Time-series sensor data (soil, air, brightness)
-- **Task**: Command queue (pump, light) with completion flags
-- **PlantVariety**: Threshold settings for different plants
-- **Operator**: User management
+- **Node:** Sensor device registration and configuration
+- **Measurement:** Time-series sensor data
+- **Task:** Action queue for watering and lighting
+- **PlantVariety:** Plant-specific thresholds and care requirements
+- **Operator:** User management for access control
 
-### Key Relationships
-```sql
-Node.fk_plantVariety_contains → PlantVariety.pk_plantVariety
-Node.fk_operator_belongs → Operator.pk_user_id
-Measurement.fk_node_isRecorded → Node.pk_node
-Task.fk_node_isAssigned → Node.pk_node
-```
+### Status Detection
+- **Online Status:** Last measurement within 10 minutes
+- **Data Staleness:** Measurements older than 20 minutes show "N/A"
+- **Health Alerts:** Threshold-based warnings for critical conditions
 
----
-
-## 🛠️ Setup & Deployment
+## 🚀 Server Deployment
 
 ### Prerequisites
-- Raspberry Pi 4 with Raspberry Pi OS
-- Apache/Nginx + PHP 8+ + MySQL
-- 7" touchscreen connected and calibrated
+- **Web Server** with PHP 8+ and MySQL support
+- **Database** with existing Plantimeter schema
 
-### Installation
-```bash
-# 1. Clone to web directory
-sudo git clone [repo] /var/www/html/plantimeter
+### Upload Instructions
+1. **Upload Project Files** to your web server
+2. **Configure Database Connection** in `inc/db.inc.php`:
+   ```php
+   define("HOST", "127.0.0.1");
+   define("DB_USER", "php");
+   define("DB_PASSWORD", "qwer");
+   define("DB_NAME", "webDB");
+   ```
+3. **Set File Permissions** if needed for your server environment
 
-# 2. Set permissions
-sudo chown -R www-data:www-data /var/www/html/plantimeter
-sudo chmod -R 755 /var/www/html/plantimeter
+### Production Deployment
+- **Kiosk Mode:** Chromium fullscreen on boot
+- **Auto-start Service:** Systemd service for dashboard
+- **WiFi Configuration:** For ESP32 sensor communication
+- **Touchscreen Calibration:** Ensure proper touch response
 
-# 3. Import database
-mysql -u root -p < database/plantimeter.sql
+## 🎮 User Interaction Flow
 
-# 4. Configure database connection
-sudo nano inc/db.inc.php
-```
+### Main Dashboard
+1. **Loading Screen:** Animated progress on initial load
+2. **Statistics Section:** System overview with health indicators
+3. **Node Grid:** Touch cards for each sensor node
+4. **Node Selection:** Tap card to view detailed information
 
-### Kiosk Mode Setup
-```bash
-# Install Chromium
-sudo apt install chromium-browser
+### Node Detail Page
+1. **Overview Section:** Node configuration and current status
+2. **Current Measurements:** Latest sensor readings with timestamps
+3. **Chart Section:** Historical data visualization with ApexCharts
+4. **Task Management:** Recent actions and completion status
+5. **Control Actions:** Water and light controls with feedback
 
-# Create autostart script
-mkdir -p ~/.config/autostart
-cat > ~/.config/autostart/plantimeter.desktop << EOF
-[Desktop Entry]
-Type=Application
-Name=Plantimeter Dashboard
-Exec=chromium-browser --kiosk --disable-infobars http://localhost/plantimeter
-EOF
-```
+### Touch Gestures
+- **Tap:** Select nodes, trigger actions
+- **Drag:** Scroll between sections with snap behavior
+- **Hold:** No special actions (optimized for quick interactions)
 
----
+## 🔍 Performance Considerations
 
-## 🧪 Development Features
+### Optimization Features
+- **Efficient AJAX:** Only update changed data on subsequent loads
+- **Image Optimization:** Properly sized logos and icons
+- **CSS Variables:** Consistent theming with minimal overhead
+- **JavaScript Debouncing:** Prevent rapid-fire touch events
+- **Database Indexing:** Optimized queries for real-time performance
 
-### API Testing
-- **api-test.html**: Manual testing interface for ESP32 communication
-- **writeLog.php**: Accepts MAC address and log data from nodes
-- **Real-time validation**: Parameter checking and JSON responses
+### Memory Management
+- **Limited DOM Updates:** Update existing elements vs. rebuilding
+- **Chart Reuse:** Update existing ApexCharts instances
+- **Event Cleanup:** Proper removal of event listeners
+- **Image Caching:** Leverage browser cache for static assets
 
-### Error Handling
-- **Connection timeouts**: AJAX error callbacks with user feedback
-- **Database failures**: Graceful degradation with "N/A" fallbacks
-- **Stale data detection**: 20-minute threshold for offline status
+## 📱 Browser Compatibility
 
-### Performance Optimization
-- **Selective updates**: Only refresh changed values, not entire DOM
-- **Progressive loading**: Staggered AJAX calls with progress indication
-- **Memory management**: Chart data limited to last 10 measurements
-
----
-
-## 🔧 Customization
-
-### Adding New Sensor Types
-1. Update `Measurement` table schema
-2. Modify `fetch_node_data.php` to include new fields
-3. Add chart datasets in node.php Chart.js config
-4. Update CSS color classes for new thresholds
-
-### Threshold Configuration
-- Modify `PlantVariety` table for new optimal ranges
-- Update classification logic in `fetch_nodes.php`
-- Adjust CSS warning/critical color assignments
-
-### Screen Resolution Adaptation
-- Modify CSS `:root` variables for different screen sizes
-- Update `html` width/height constraints
-- Adjust touch target sizes and spacing
-
----
-
-## 🔍 Troubleshooting
-
-### Common Issues
-- **Blank charts**: Check Chart.js CDN loading and data format
-- **No AJAX updates**: Verify PHP error logs and database connectivity
-- **Touch not working**: Ensure mouse event handlers are properly bound
-- **Styling issues**: Check font loading and CSS variable inheritance
-
-### Debug Tools
-- Browser DevTools → Network tab for AJAX monitoring
-- `logs/logs.txt` for ESP32 communication logs
-- MySQL query logs for database performance
-- PHP error logs for backend issues
-
----
-
-## 📱 Mobile Considerations
-
-While optimized for Raspberry Pi touchscreen, the interface works on:
-- **Tablets**: iPad, Android tablets (landscape mode recommended)
-- **Desktop**: Mouse interaction fully supported
-- **Mobile phones**: Limited due to 800px fixed width
-
----
+**Primary Target:** Chromium on Raspberry Pi OS
+**Fallback Support:** Modern browsers with touch capability
+**No Support:** Internet Explorer, legacy mobile browsers
 
 ## 🚀 Future Enhancements
 
-- [ ] **Multi-language support** (German/English toggle)
-- [ ] **Data export** (CSV download of measurements)
-- [ ] **Push notifications** for critical alerts
-- [ ] **Voice control** integration
-- [ ] **Remote access** via VPN/tunnel
-- [ ] **Historical trends** (weekly/monthly charts)
+- **Multi-language Support:** German/English toggle
+- **User Authentication:** Operator-specific dashboards
+- **Advanced Analytics:** Trend analysis and predictions
+- **Push Notifications:** Critical alert system
+- **Offline Mode:** Local caching for network interruptions
 
 ---
 
-## 📄 License & Credits
-
-**Project**: PIF DT IF 24/25 - Plants in Focus S.A.  
-**Hardware**: ESP32 + sensor nodes, Raspberry Pi 4 + touchscreen  
-**Framework**: Custom PHP/MySQL with jQuery frontend  
-
-© 2024-25 Plantimeter | PLANTS IN FOCUS S.A. | Gardening made easy!
+**Build this entire system from scratch using the specifications above. Focus on touch optimization, real-time updates with AJAX, and ApexCharts for data visualization. Remove any references to Chart.js and ensure all fetch endpoints are properly organized in the resources/fetch/ directory.**
